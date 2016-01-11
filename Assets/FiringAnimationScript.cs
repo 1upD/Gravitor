@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class FiringAnimationScript : StateMachineBehaviour {
+    
+    // Name of weapon associated
+    public string weaponObjectName = "CQAssaultRifle";
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	//override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -15,7 +18,7 @@ public class FiringAnimationScript : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        Animator rifleAnimator = GameObject.Find("CQAssaultRifle").GetComponent<Animator>();
+        Animator rifleAnimator = GameObject.Find(weaponObjectName).GetComponent<Animator>();
         rifleAnimator.SetBool("Firing", false);
 	}
 

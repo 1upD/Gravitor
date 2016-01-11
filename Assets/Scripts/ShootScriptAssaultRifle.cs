@@ -7,26 +7,58 @@ public class ShootScriptAssaultRifle : MonoBehaviour
 
     // Rocket Prefab
     public GameObject rocketPrefab;
+    
+    // Name of weapon associated
+    public string weaponObjectName = "CQAssaultRifle";
+    
+    // Does this weapon have burst fire?
+    public bool canBurstFire = true;
+
+    // Is this weapon in burst fire mode?
+    private bool burstFire = false;
+
     private Animator rifleAnimator;
 
     void Start()
     {
         // Get the rifle animator
-        rifleAnimator = GameObject.Find("CQAssaultRifle").GetComponent<Animator>();
+        rifleAnimator = GameObject.Find(weaponObjectName).GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // left mouse clicked? rifle firing animation finished?
-        if (Input.GetMouseButtonDown(0) && !rifleAnimator.GetBool("Firing"))
+        // left mouse held down? rifle firing animation finished?
+        if (Input.GetMouseButton(0) && !rifleAnimator.GetBool("Firing"))
         {
             // Toggle the firing animation
             rifleAnimator.SetBool("Firing", true);
 
-            // Burst fire
-            StartCoroutine(Burst());
+            if (burstFire)
+            {
+                // Burst fire
+                StartCoroutine(Burst());
+            }
+            else
+            {
+                Fire();
+            }
             
+        }
+
+        // right mouse clicked? Has burst fire?
+        if (Input.GetMouseButtonDown(1) && canBurstFire)
+        {
+            if (burstFire)
+            {
+                rifleAnimator.SetFloat("FiringSpeedMultiplier", 2);
+                burstFire = false;
+            }
+            else
+            {
+                rifleAnimator.SetFloat("FiringSpeedMultiplier", 1);
+                burstFire = true;
+            }
         }
     }
 
