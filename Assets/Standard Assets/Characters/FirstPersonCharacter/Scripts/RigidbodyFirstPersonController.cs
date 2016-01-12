@@ -8,6 +8,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (CapsuleCollider))]
     public class RigidbodyFirstPersonController : MonoBehaviour
     {
+        // Variable to store the previous frame's gravity to check if it has changed
+        // Added by Derek Dik, 1/12/2016
+        //private Vector3 currentGravity;
+
         [Serializable]
         public class MovementSettings
         {
@@ -23,6 +27,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #if !MOBILE_INPUT
             private bool m_Running;
 #endif
+
 
             public void UpdateDesiredTargetSpeed(Vector2 input)
             {
@@ -123,6 +128,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+            //currentGravity = Physics.gravity;
         }
 
 
@@ -134,6 +140,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Jump = true;
             }
+
+            // Rotate the player towards the line perpendicular to gravity along the X-axis
+            // Added by Derek Dik, 1/12/2016
+            //AdjustToGravity();
+        }
+
+        private void AdjustToGravity()
+        {
+            //if (Physics.gravity != currentGravity)
+            //{
+                //currentGravity = Physics.gravity;
+                Vector3 gravityDir = Physics.gravity;
+                Vector3 currentAngles = transform.eulerAngles;
+                gravityDir = Quaternion.Euler(-90, 0, 0) * gravityDir;
+                transform.LookAt(gravityDir);
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentAngles.y, currentAngles.z);
+            //}
         }
 
 

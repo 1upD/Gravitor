@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\FiringAnimationScript.cs" />
      <Compile Include="Assets\Scripts\BulletController.cs" />
+     <Compile Include="Assets\Scripts\LevelRotate.cs" />
      <Compile Include="Assets\Scripts\ShootScriptAssaultRifle.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
