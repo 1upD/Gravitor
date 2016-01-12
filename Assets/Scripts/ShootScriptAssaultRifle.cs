@@ -17,12 +17,24 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     // Is this weapon in burst fire mode?
     private bool burstFire = false;
 
+    // Burst-fire animation speed multiplier
+    public float burstFireSpeed = 1.0f;
+
+    // Single-fire animation speed multiplier
+    public float singleFireSpeed = 3.0f;
+
+    // Prefab to use as the gun's muzzle flash
+    public GameObject muzzleFlashPrefab;
+
     private Animator rifleAnimator;
+
+
 
     void Start()
     {
         // Get the rifle animator
         rifleAnimator = GameObject.Find(weaponObjectName).GetComponent<Animator>();
+        rifleAnimator.SetFloat("FiringSpeedMultiplier", singleFireSpeed);
     }
 
     // Update is called once per frame
@@ -51,12 +63,12 @@ public class ShootScriptAssaultRifle : MonoBehaviour
         {
             if (burstFire)
             {
-                rifleAnimator.SetFloat("FiringSpeedMultiplier", 2);
+                rifleAnimator.SetFloat("FiringSpeedMultiplier", singleFireSpeed);
                 burstFire = false;
             }
             else
             {
-                rifleAnimator.SetFloat("FiringSpeedMultiplier", 1);
+                rifleAnimator.SetFloat("FiringSpeedMultiplier", burstFireSpeed);
                 burstFire = true;
             }
         }
@@ -95,5 +107,13 @@ public class ShootScriptAssaultRifle : MonoBehaviour
         // (requires the rocket to have a rigidbody attached to it)
         float force = g.GetComponent<BulletController>().speed;
         g.GetComponent<Rigidbody>().AddForce(g.transform.forward * force);
+
+        // Instantiate a prefab for the muzzle flash
+        GameObject muzzleFlash = (GameObject)Instantiate(muzzleFlashPrefab,
+            transform.position,
+            transform.parent.rotation);
+        // Set the parent of the flash to be this
+        muzzleFlash.transform.parent = transform;
+
     }
 }
