@@ -47,7 +47,11 @@
   <ItemGroup>
      <Compile Include="Assets\FiringAnimationScript.cs" />
      <Compile Include="Assets\Scripts\BulletController.cs" />
+     <Compile Include="Assets\Scripts\Interact.cs" />
+     <Compile Include="Assets\Scripts\InteractPickupRifle.cs" />
+     <Compile Include="Assets\Scripts\InteractRotateLevel.cs" />
      <Compile Include="Assets\Scripts\LevelRotate.cs" />
+     <Compile Include="Assets\Scripts\SelectableObject.cs" />
      <Compile Include="Assets\Scripts\ShootScriptAssaultRifle.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />

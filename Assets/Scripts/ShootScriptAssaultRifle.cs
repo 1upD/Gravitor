@@ -9,7 +9,7 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     public GameObject rocketPrefab;
     
     // Name of weapon associated
-    public string weaponObjectName = "CQAssaultRifle";
+    public string weaponModelName = "CQAssaultRifle";
     
     // Does this weapon have burst fire?
     public bool canBurstFire = true;
@@ -26,6 +26,15 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     // Prefab to use as the gun's muzzle flash
     public GameObject muzzleFlashPrefab;
 
+    // Boolean to represent whether weapon is held
+    public bool currentWeapon = false;
+
+    // Boolean to represent whether weapon is owned
+    public bool hasWeapon = false;
+
+    // Key to switch to weapon
+    public KeyCode weaponCode = KeyCode.Alpha1;
+
     private Animator rifleAnimator;
 
 
@@ -33,44 +42,70 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     void Start()
     {
         // Get the rifle animator
-        rifleAnimator = GameObject.Find(weaponObjectName).GetComponent<Animator>();
+        rifleAnimator = GameObject.Find(weaponModelName).GetComponent<Animator>();
         rifleAnimator.SetFloat("FiringSpeedMultiplier", singleFireSpeed);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // left mouse held down? rifle firing animation finished?
-        if (Input.GetMouseButton(0) && !rifleAnimator.GetBool("Firing"))
+        // If this weapon's key is pressed and the player has this weapon, toggle it.
+        if (Input.GetKeyDown(weaponCode) && hasWeapon)
         {
-            // Toggle the firing animation
-            rifleAnimator.SetBool("Firing", true);
-
-            if (burstFire)
+            if (!currentWeapon)
             {
-                // Burst fire
-                StartCoroutine(Burst());
+                currentWeapon = true;
+                // Put away all other weapons
+
             }
             else
             {
-                Fire();
+                currentWeapon = false;
             }
-            
         }
 
-        // right mouse clicked? Has burst fire?
-        if (Input.GetMouseButtonDown(1) && canBurstFire)
+        if (currentWeapon)
         {
-            if (burstFire)
+            // Rescale the weapon so that it is visible
+            GameObject.Find(weaponModelName).transform.parent.localScale = new Vector3(1, 1, 1);
+
+            // left mouse held down? rifle firing animation finished?
+            if (Input.GetMouseButton(0) && !rifleAnimator.GetBool("Firing"))
             {
-                rifleAnimator.SetFloat("FiringSpeedMultiplier", singleFireSpeed);
-                burstFire = false;
+                // Toggle the firing animation
+                rifleAnimator.SetBool("Firing", true);
+
+                if (burstFire)
+                {
+                    // Burst fire
+                    StartCoroutine(Burst());
+                }
+                else
+                {
+                    Fire();
+                }
+
             }
-            else
+
+            // right mouse clicked? Has burst fire?
+            if (Input.GetMouseButtonDown(1) && canBurstFire)
             {
-                rifleAnimator.SetFloat("FiringSpeedMultiplier", burstFireSpeed);
-                burstFire = true;
+                if (burstFire)
+                {
+                    rifleAnimator.SetFloat("FiringSpeedMultiplier", singleFireSpeed);
+                    burstFire = false;
+                }
+                else
+                {
+                    rifleAnimator.SetFloat("FiringSpeedMultiplier", burstFireSpeed);
+                    burstFire = true;
+                }
             }
+        }
+        else
+        {
+            // If the weapon is not currently held, rescale it is that it is invisible
+            GameObject.Find(weaponModelName).transform.parent.gameObject.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 

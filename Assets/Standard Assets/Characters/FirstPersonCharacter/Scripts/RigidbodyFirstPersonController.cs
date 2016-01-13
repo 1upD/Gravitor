@@ -19,19 +19,34 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float BackwardSpeed = 4.0f;  // Speed when walking backwards
             public float StrafeSpeed = 4.0f;    // Speed when walking sideways
             public float RunMultiplier = 2.0f;   // Speed when sprinting
+            public float crouchMultiplier = 0.5f; // Speed while crouching
 	        public KeyCode RunKey = KeyCode.LeftShift;
+            public KeyCode CrouchKey = KeyCode.C;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
 
+            public float standHeight = 1.6f;
+            public float crouchHeight = 0.5f;
 #if !MOBILE_INPUT
             private bool m_Running;
+            private bool m_Crouching;
 #endif
 
 
             public void UpdateDesiredTargetSpeed(Vector2 input)
             {
-	            if (input == Vector2.zero) return;
+                if (Input.GetKey(CrouchKey))
+                {
+                    CurrentTargetSpeed *= crouchMultiplier;
+                    m_Crouching = true;
+                }
+                else
+                {
+                    m_Crouching = false;
+                }
+                
+                if (input == Vector2.zero) return;
 				if (input.x > 0 || input.x < 0)
 				{
 					//strafe
@@ -58,6 +73,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 	            {
 		            m_Running = false;
 	            }
+
+
 #endif
             }
 
@@ -65,6 +82,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public bool Running
             {
                 get { return m_Running; }
+            }
+            public bool Crouching
+            {
+                get { return m_Crouching; }
             }
 #endif
         }
@@ -141,9 +162,27 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jump = true;
             }
 
+            // Controls crouching
+            // Added by Derek Dik 1/13/2016
+            UpdateHeight();
+
             // Rotate the player towards the line perpendicular to gravity along the X-axis
             // Added by Derek Dik, 1/12/2016
             //AdjustToGravity();
+        }
+
+        private void UpdateHeight()
+        {
+            // Replace public variable with getter method when you get a chance
+            if (movementSettings.Crouching)
+            {
+                m_Capsule.height = movementSettings.crouchHeight;
+            }
+            else
+            {
+                m_Capsule.height = movementSettings.standHeight;
+            }
+            
         }
 
         private void AdjustToGravity()

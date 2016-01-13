@@ -12,10 +12,13 @@ public class LevelRotate : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         currentAngle = transform.rotation.z;
-        beginRotation();
+        if (isRotating)
+        {
+            beginRotation();
+        }
 	}
 
-    void beginRotation()
+    public void beginRotation()
     {
         startRotationAngle = currentAngle;
         isRotating = true;
