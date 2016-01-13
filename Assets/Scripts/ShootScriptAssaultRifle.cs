@@ -32,12 +32,19 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     // Boolean to represent whether weapon is owned
     public bool hasWeapon = false;
 
+    // Boolean to represent whether or not the weapon has a firing animation
+    public bool hasWeaponFireAnimation = true;
+
+    // Boolean to represent if the weapon is semi or automatic
+    public bool hasAutomaticFire = true;
+
     // Key to switch to weapon
     public KeyCode weaponCode = KeyCode.Alpha1;
 
     private Animator rifleAnimator;
 
-
+    private bool readyToFire = true;
+    private bool mouseTrigger = false;
 
     void Start()
     {
@@ -49,13 +56,25 @@ public class ShootScriptAssaultRifle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If the weapon has a firing animation, check if the weapon is ready to fire
+        if (hasWeaponFireAnimation)
+        {
+            readyToFire = !rifleAnimator.GetBool("Firing");
+        }
+        else
+        {
+            // Determine if the weapon is ready to fire
+            readyToFire = true;
+        }
+
         // If this weapon's key is pressed and the player has this weapon, toggle it.
         if (Input.GetKeyDown(weaponCode) && hasWeapon)
         {
             if (!currentWeapon)
             {
-                currentWeapon = true;
                 // Put away all other weapons
+                PutAwayAll();
+                currentWeapon = true;
 
             }
             else
@@ -69,8 +88,19 @@ public class ShootScriptAssaultRifle : MonoBehaviour
             // Rescale the weapon so that it is visible
             GameObject.Find(weaponModelName).transform.parent.localScale = new Vector3(1, 1, 1);
 
+            // Get mouse input
+            if (hasAutomaticFire)
+            {
+                mouseTrigger = Input.GetMouseButton(0);
+            }
+            else
+            {
+                mouseTrigger = Input.GetMouseButtonDown(0);
+            }
+
+
             // left mouse held down? rifle firing animation finished?
-            if (Input.GetMouseButton(0) && !rifleAnimator.GetBool("Firing"))
+            if (mouseTrigger && readyToFire)
             {
                 // Toggle the firing animation
                 rifleAnimator.SetBool("Firing", true);
@@ -107,6 +137,16 @@ public class ShootScriptAssaultRifle : MonoBehaviour
             // If the weapon is not currently held, rescale it is that it is invisible
             GameObject.Find(weaponModelName).transform.parent.gameObject.transform.localScale = new Vector3(0, 0, 0);
         }
+    }
+
+    public static void PutAwayAll()
+    {
+        GameObject g = GameObject.Find("RifleMuzzle");
+        ShootScriptAssaultRifle script = g.GetComponent<ShootScriptAssaultRifle>();
+        script.currentWeapon = false;
+        g = GameObject.Find("ShotgunMuzzle");
+        script = g.GetComponent<ShootScriptAssaultRifle>();
+        script.currentWeapon = false;
     }
 
     // Asynchronous method to fire three shots

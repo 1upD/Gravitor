@@ -4,6 +4,8 @@ using System.Collections;
 public class InteractPickupRifle : MonoBehaviour {
 
     Interact interact;
+    public string weaponMuzzle = "RifleMuzzle";
+
 
     // Use this for initialization
     void Start()
@@ -16,9 +18,10 @@ public class InteractPickupRifle : MonoBehaviour {
     {
         if (interact.OnInteract())
         {
-            GameObject g = GameObject.Find("RifleMuzzle");
+            GameObject g = GameObject.Find(weaponMuzzle);
             ShootScriptAssaultRifle script = g.GetComponent<ShootScriptAssaultRifle>();
             script.hasWeapon = true;
+            ShootScriptAssaultRifle.PutAwayAll();
             script.currentWeapon = true;
             Destroy(transform.gameObject);
 
