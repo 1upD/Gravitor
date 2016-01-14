@@ -138,7 +138,16 @@ public class ShootScriptAssaultRifle : MonoBehaviour
             GameObject.Find(weaponModelName).transform.parent.gameObject.transform.localScale = new Vector3(0, 0, 0);
         }
     }
+	public static void TakeAwayAll(){
+		PutAwayAll ();
+		GameObject g = GameObject.Find("RifleMuzzle");
+		ShootScriptAssaultRifle script = g.GetComponent<ShootScriptAssaultRifle>();
+		script.hasWeapon = false;
+		g = GameObject.Find("ShotgunMuzzle");
+		script = g.GetComponent<ShootScriptAssaultRifle>();
+		script.hasWeapon = false;
 
+	}
     public static void PutAwayAll()
     {
         GameObject g = GameObject.Find("RifleMuzzle");

@@ -28,6 +28,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             public float standHeight = 1.6f;
             public float crouchHeight = 0.5f;
+			public float deadHeight = 0.2f;
 #if !MOBILE_INPUT
             private bool m_Running;
             private bool m_Crouching;
@@ -75,6 +76,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 	            }
 
 
+
+
 #endif
             }
 
@@ -113,7 +116,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
-        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+		private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+		private bool dead = false;
 
 
         public Vector3 Velocity
@@ -155,6 +159,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void Update()
         {
+			// Controls crouching
+			// Added by Derek Dik 1/13/2016
+
+			// Only update rotation and jumping if the player is not dead
+			UpdateHeight();
+			if(!dead){
             RotateView();
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
@@ -162,27 +172,26 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jump = true;
             }
 
-            // Controls crouching
-            // Added by Derek Dik 1/13/2016
-            UpdateHeight();
+
 
             // Rotate the player towards the line perpendicular to gravity along the X-axis
             // Added by Derek Dik, 1/12/2016
-            //AdjustToGravity();
+				//AdjustToGravity();
+			}
         }
 
         private void UpdateHeight()
         {
-            // Replace public variable with getter method when you get a chance
-            if (movementSettings.Crouching)
-            {
-                m_Capsule.height = movementSettings.crouchHeight;
-            }
-            else
-            {
-                m_Capsule.height = movementSettings.standHeight;
-            }
-            
+			if (dead) {
+				m_Capsule.height = movementSettings.deadHeight;
+			} else {
+				// Replace public variable with getter method when you get a chance
+				if (movementSettings.Crouching) {
+					m_Capsule.height = movementSettings.crouchHeight;
+				} else {
+					m_Capsule.height = movementSettings.standHeight;
+				}
+			}
         }
 
         private void AdjustToGravity()
@@ -201,51 +210,45 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            GroundCheck();
-            Vector2 input = GetInput();
+			if (!dead) {
+				GroundCheck ();
+				Vector2 input = GetInput ();
 
-            if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
-            {
-                // always move along the camera forward as it is the direction that it being aimed at
-                Vector3 desiredMove = cam.transform.forward*input.y + cam.transform.right*input.x;
-                desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
+				if ((Mathf.Abs (input.x) > float.Epsilon || Mathf.Abs (input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
+					// always move along the camera forward as it is the direction that it being aimed at
+					Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
+					desiredMove = Vector3.ProjectOnPlane (desiredMove, m_GroundContactNormal).normalized;
 
-                desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed;
-                desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed;
-                desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed;
-                if (m_RigidBody.velocity.sqrMagnitude <
-                    (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
-                {
-                    m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
-                }
-            }
+					desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
+					desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
+					desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
+					if (m_RigidBody.velocity.sqrMagnitude <
+					               (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed)) {
+						m_RigidBody.AddForce (desiredMove * SlopeMultiplier (), ForceMode.Impulse);
+					}
+				}
 
-            if (m_IsGrounded)
-            {
-                m_RigidBody.drag = 5f;
+				if (m_IsGrounded) {
+					m_RigidBody.drag = 5f;
 
-                if (m_Jump)
-                {
-                    m_RigidBody.drag = 0f;
-                    m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                    m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
-                    m_Jumping = true;
-                }
+					if (m_Jump) {
+						m_RigidBody.drag = 0f;
+						m_RigidBody.velocity = new Vector3 (m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
+						m_RigidBody.AddForce (new Vector3 (0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
+						m_Jumping = true;
+					}
 
-                if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
-                {
-                    m_RigidBody.Sleep();
-                }
-            }
-            else
-            {
-                m_RigidBody.drag = 0f;
-                if (m_PreviouslyGrounded && !m_Jumping)
-                {
-                    StickToGroundHelper();
-                }
-            }
-            m_Jump = false;
+					if (!m_Jumping && Mathf.Abs (input.x) < float.Epsilon && Mathf.Abs (input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f) {
+						m_RigidBody.Sleep ();
+					}
+				} else {
+					m_RigidBody.drag = 0f;
+					if (m_PreviouslyGrounded && !m_Jumping) {
+						StickToGroundHelper ();
+					}
+				}
+				m_Jump = false;
+			}
         }
 
 
@@ -273,14 +276,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Vector2 GetInput()
         {
-            
-            Vector2 input = new Vector2
-                {
-                    x = CrossPlatformInputManager.GetAxis("Horizontal"),
-                    y = CrossPlatformInputManager.GetAxis("Vertical")
-                };
-			movementSettings.UpdateDesiredTargetSpeed(input);
-            return input;
+			if (!dead) {            
+				Vector2 input = new Vector2 {
+					x = CrossPlatformInputManager.GetAxis ("Horizontal"),
+					y = CrossPlatformInputManager.GetAxis ("Vertical")
+				};
+				movementSettings.UpdateDesiredTargetSpeed (input);
+				return input;
+			} else {
+				return new Vector2 (0, 0);
+
+			}
+
         }
 
 
@@ -323,5 +330,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jumping = false;
             }
         }
+
+		public void Freeze(){
+			Debug.Log ("Executing Freeze()");
+			dead = true;
+			Debug.Log (dead);
     }
+	}
 }

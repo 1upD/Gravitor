@@ -19,3 +19,24 @@ C:\Users\1upde_000\Documents\Unity Projects\FirstPersonShooter\Temp\bin\Debug\Un
 C:\Users\1upde_000\Documents\Unity Projects\FirstPersonShooter\obj\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache
 C:\Users\1upde_000\Documents\Unity Projects\FirstPersonShooter\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\1upde_000\Documents\Unity Projects\FirstPersonShooter\obj\Debug\Assembly-CSharp-firstpass.pdb
+D:\unity-project\shooter160114\Temp\bin\Debug\Assembly-CSharp-firstpass.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEditor.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.Networking.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.UI.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Mono.Cecil.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Unity.SerializationLogic.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Unity.DataContract.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Unity.UNetWeaver.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Unity.CecilTools.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.xml
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEditor.xml
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.UI.xml
+D:\unity-project\shooter160114\Temp\bin\Debug\UnityEngine.Networking.xml
+D:\unity-project\shooter160114\obj\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache
+D:\unity-project\shooter160114\obj\Debug\Assembly-CSharp-firstpass.dll
+D:\unity-project\shooter160114\obj\Debug\Assembly-CSharp-firstpass.pdb
