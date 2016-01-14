@@ -33,7 +33,7 @@ public class Health : MonoBehaviour {
 			Debug.Log("Taking away weapons");
 			ShootScriptAssaultRifle.TakeAwayAll();
 			Debug.Log ("Freezing player");
-			player.GetComponent<RigidbodyFirstPersonController>().Freeze();
+			GetComponent<RigidbodyFirstPersonController>().Freeze();
 			Debug.Log ("Player frozen.");
 		}
 	}

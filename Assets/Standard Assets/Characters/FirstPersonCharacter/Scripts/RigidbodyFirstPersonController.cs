@@ -161,11 +161,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
 			// Controls crouching
 			// Added by Derek Dik 1/13/2016
+            UpdateHeight();
+            
+            RotateView();
 
 			// Only update rotation and jumping if the player is not dead
-			UpdateHeight();
 			if(!dead){
-            RotateView();
+           
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
