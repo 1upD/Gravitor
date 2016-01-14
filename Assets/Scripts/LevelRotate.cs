@@ -31,18 +31,18 @@ public class LevelRotate : MonoBehaviour {
             // Get the current angle of rotation
             currentAngle = transform.eulerAngles.z;
             // Check edge case: Make sure that the angle hasn't crossed 359 degrees and reverted to 0
-            if (currentAngle == 0 && startRotationAngle == 180)
+            if (currentAngle == 0 && startRotationAngle == 270)
             {
                 velocity = 0;
                 isRotating = false;
             }
             // If the rotation is less than halfway complete, increase the velocity by one
-            if (currentAngle < startRotationAngle + 90)
+            if (currentAngle < startRotationAngle + 45)
             {
                 velocity_iterator += 1.0f * rotationSpeed;
             }
             // If the rotation is more than halfway complete but not complete, decrease the velocity by one
-            else if (currentAngle > startRotationAngle && currentAngle < startRotationAngle + 180)
+            else if (currentAngle > startRotationAngle && currentAngle < startRotationAngle + 90)
             {
                 velocity_iterator -= 1.0f * rotationSpeed;            }
             // If rotation is complete, set velocity to 0 and set the bool flag isRotating to false to end rotation
