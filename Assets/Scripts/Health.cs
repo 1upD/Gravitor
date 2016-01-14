@@ -37,4 +37,9 @@ public class Health : MonoBehaviour {
 			Debug.Log ("Player frozen.");
 		}
 	}
+
+    public void SetGameOver(bool isOver)
+    {
+        this.isGameOver = isOver;
+    }
 }

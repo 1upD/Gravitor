@@ -3,23 +3,50 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Counter : MonoBehaviour {
+    public GameObject healthObject;
     public Text counterText;
-    float set_seconds = 100;
+    public string counterString = "Reactor A";
+    public float maxSeconds = 300;
+    float set_seconds;
     public float seconds;
+
+    private Health healthScript;
 
 	// Use this for initialization
 	void Start () {
         counterText = GetComponent<Text>() as Text;
+        set_seconds = maxSeconds;
+        seconds = set_seconds;
+        healthScript = healthObject.GetComponent<Health>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        seconds = set_seconds - (int)(Time.time % 60f);
-        counterText.text = "Time : " + seconds.ToString("000");
-        if (seconds < 90) changeTimeColor();
+        if (seconds > 0)
+        {
+            seconds = set_seconds - (int)(Time.time % 60f);
+            counterText.text = counterString + ": " + seconds.ToString("000");
+            if (seconds < 90) changeTimeColor();
+        }
+        else
+        {
+            gameOver();
+        }
 	}
+
+    private void gameOver()
+    {
+        healthScript.SetGameOver(true);
+    }
 
     public void changeTimeColor() {
         counterText.color = Color.red;
     }
+
+    public void resetTime()
+    {
+        set_seconds = maxSeconds;
+        counterText.color = Color.white;
+    }
+
 }
