@@ -20,8 +20,11 @@ public class LevelRotate : MonoBehaviour {
 
     public void beginRotation()
     {
-        startRotationAngle = currentAngle;
-        isRotating = true;
+        if (!isRotating)
+        {
+            startRotationAngle = currentAngle;
+            isRotating = true;
+        }
     }
 
 	// Update is called once per frame
