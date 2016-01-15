@@ -24,7 +24,7 @@ public class Counter : MonoBehaviour {
 	void Update () {
         if (seconds > 0)
         {
-            seconds = set_seconds - (int)(Time.time % 60f);
+			seconds = set_seconds - (int)(Time.time);
             counterText.text = counterString + ": " + seconds.ToString("000");
             if (seconds < 90) changeTimeColor();
         }
@@ -43,10 +43,14 @@ public class Counter : MonoBehaviour {
         counterText.color = Color.red;
     }
 
-    public void resetTime()
+    public void resetTimer()
     {
-        set_seconds = maxSeconds;
-        counterText.color = Color.white;
+		Debug.Log ("resetTimer works");
+		// Never rest if at maximum
+		if (seconds < maxSeconds) {
+			set_seconds += maxSeconds - seconds;
+			counterText.color = Color.white;
+		}
     }
 
 }

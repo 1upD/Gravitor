@@ -9,9 +9,12 @@ public class Health : MonoBehaviour {
 	public Text gameOverText;   //reference for text
 	private bool isGameOver = false; //flag to see if game is over
 	public GameObject player;
+	public Text scoreText;
+	private ScoreCounter scoreCounter;
 
 	void Start(){
 		gameOverText.enabled = false; //disable GameOver text on start
+		scoreCounter = scoreText.GetComponent<ScoreCounter>();
 	}
 
 	// Update is called once per frame
@@ -41,5 +44,6 @@ public class Health : MonoBehaviour {
     public void SetGameOver(bool isOver)
     {
         this.isGameOver = isOver;
+		scoreCounter.StopScoring ();
     }
 }
