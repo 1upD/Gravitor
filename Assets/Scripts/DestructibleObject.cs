@@ -21,11 +21,13 @@ public class DestructibleObject : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (health > 0.0f && other.gameObject.name != self.name)
+
+        Projectile projectile = other.gameObject.GetComponent<Projectile>();
+        if (health > 0.0f && projectile != null)
         {
-            health -= 5.0f;
+            health -= projectile.damage;
         }
-        else
+        else if(projectile != null)
         {
             die();
         }
