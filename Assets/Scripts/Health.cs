@@ -22,13 +22,29 @@ public class Health : MonoBehaviour {
 		//check if game is over i.e., health is greater than 0
 		if(!isGameOver)
 			transform.Translate(Input.GetAxis("Horizontal")*Time.deltaTime*10f, 0, 0); //get input
+        if (healthBarSlider.value <= 0)
+        {
+            endGame();
+
+        }
 	}
+
+    private void endGame()
+    {
+        isGameOver = true;    //set game over to true
+        gameOverText.enabled = true; //enable GameOver text
+        Debug.Log("Taking away weapons");
+        ShootScriptAssaultRifle.TakeAwayAll();
+        Debug.Log("Freezing player");
+        GetComponent<RigidbodyFirstPersonController>().Freeze();
+        Debug.Log("Player frozen.");
+    }
 
 	//Check if player enters/stays on the fire
 	void OnTriggerStay(Collider other){
 		//if player triggers fire object and health is greater than 0
 		if(healthBarSlider.value>0){
-			healthBarSlider.value -=.011f;  //reduce health
+			healthBarSlider.value -=.001f;  //reduce health
 		}
 		else{
 			isGameOver = true;    //set game over to true
@@ -44,6 +60,7 @@ public class Health : MonoBehaviour {
     public void SetGameOver(bool isOver)
     {
         this.isGameOver = isOver;
+        healthBarSlider.value = 0;
 		scoreCounter.StopScoring ();
     }
 }
