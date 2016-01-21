@@ -198,6 +198,8 @@ public class ShootScriptAssaultRifle : MonoBehaviour
             transform.parent.rotation);
         // Set the parent of the flash to be this
         muzzleFlash.transform.parent = transform;
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		audioSource.Play ();
 
     }
 }
