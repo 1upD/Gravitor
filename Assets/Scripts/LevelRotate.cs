@@ -31,41 +31,51 @@ public class LevelRotate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // If this level should currently rotate:
-        if(isRotating){
-			// Rotating sound
-			AudioSource audioSource = GetComponent<AudioSource> ();
+		if (isRotating) {
 
-			if(!audioSource.isPlaying) audioSource.Play();
-
-            // Get the current angle of rotation
-            currentAngle = transform.eulerAngles.z;
-            // Check edge case: Make sure that the angle hasn't crossed 359 degrees and reverted to 0
-            if (currentAngle == 0 && startRotationAngle == 270)
-            {
-                velocity = 0;
-                isRotating = false;
-            }
-            // If the rotation is less than halfway complete, increase the velocity by one
-            if (currentAngle < startRotationAngle + 45)
-            {
-                velocity_iterator += 1.0f * rotationSpeed;
-            }
+			// Get the current angle of rotation
+			currentAngle = transform.eulerAngles.z;
+			// Check edge case: Make sure that the angle hasn't crossed 359 degrees and reverted to 0
+			if (currentAngle == 0 && startRotationAngle == 270) {
+				velocity = 0;
+				isRotating = false;
+			}
+			// If the rotation is less than halfway complete, increase the velocity by one
+			if (currentAngle < startRotationAngle + 45) {
+				velocity_iterator += 1.0f * rotationSpeed;
+			}
             // If the rotation is more than halfway complete but not complete, decrease the velocity by one
-            else if (currentAngle > startRotationAngle && currentAngle < startRotationAngle + 90)
-            {
-                velocity_iterator -= 1.0f * rotationSpeed;            }
+            else if (currentAngle > startRotationAngle && currentAngle < startRotationAngle + 90) {
+				velocity_iterator -= 1.0f * rotationSpeed;
+			}
             // If rotation is complete, set velocity to 0 and set the bool flag isRotating to false to end rotation
-            else
-            {
-                velocity = 0;
-                isRotating = false;
+            else {
+				velocity = 0;
+				isRotating = false;
+			}
+			// Square the velocity
+			velocity = velocity_iterator * velocity_iterator * rotationSpeed;
+			// Rotate
+			transform.eulerAngles = new Vector3 (0, 0, currentAngle + (velocity * rotationSpeed));
 
-            }
-            // Square the velocity
-            velocity = velocity_iterator * velocity_iterator * rotationSpeed;
-            // Rotate
-            transform.eulerAngles = new Vector3(0, 0, currentAngle + (velocity * rotationSpeed));
+			if (velocity == 0) {
+				isRotating = false;
+			}
 
-        }
+			if (velocity > 0.1) {
+				// Rotating sound
+				AudioSource audioSource = GetComponent<AudioSource> ();
+
+				if (!audioSource.isPlaying)
+					audioSource.Play ();
+
+			}
+
+
+		} else {
+			AudioSource audioSource = GetComponent<AudioSource> ();
+			if (audioSource.isPlaying)
+				audioSource.Stop();		
+		}
 	}
 }

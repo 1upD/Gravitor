@@ -22,7 +22,7 @@ public class InteractResetTimer : MonoBehaviour
             counter.resetTimer();
 			Debug.Log ("resetTimer()");
 			AudioSource audioSource = GetComponent<AudioSource> ();
-			audioSource.Play ();
+			if(!audioSource.isPlaying) audioSource.Play ();
         }
 
     }

@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 public class Counter : MonoBehaviour {
     public GameObject healthObject;
+	public GameObject canvas;
     public Text counterText;
     public string counterString = "Reactor A";
     public float maxSeconds = 300;
     float set_seconds;
     public float seconds;
 
+	private MusicManager musicManager;
     private Health healthScript;
 
 	// Use this for initialization
@@ -18,6 +20,7 @@ public class Counter : MonoBehaviour {
         set_seconds = maxSeconds;
         seconds = set_seconds;
         healthScript = healthObject.GetComponent<Health>();
+		musicManager = canvas.GetComponent<MusicManager> ();
 	}
 	
 	// Update is called once per frame
@@ -27,6 +30,11 @@ public class Counter : MonoBehaviour {
 			seconds = set_seconds - (int)(Time.time);
             counterText.text = counterString + ": " + seconds.ToString("000");
 			if (seconds < 90) {
+				musicManager.audioTrackIndex = 2;
+
+			}
+
+			if (seconds < 60) {
 				changeTimeColor ();
 				playAlarm ();
 			}
@@ -53,6 +61,7 @@ public class Counter : MonoBehaviour {
 		if (seconds < maxSeconds) {
 			set_seconds += maxSeconds - seconds;
 			counterText.color = Color.white;
+			musicManager.audioTrackIndex = 0;
 		}
     }
 
