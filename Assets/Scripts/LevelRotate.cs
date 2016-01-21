@@ -24,6 +24,7 @@ public class LevelRotate : MonoBehaviour {
         {
             startRotationAngle = currentAngle;
             isRotating = true;
+            
         }
     }
 

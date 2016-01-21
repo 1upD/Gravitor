@@ -22,6 +22,13 @@ public class RandomRotation : MonoBehaviour {
 	private IEnumerator TimedRotate(){
         float timeBetweenRotations = Random.Range(minTimeBetweenRotations, maxTimeBetweenRotations);
 		yield return new WaitForSeconds(timeBetweenRotations);
+        
+        // Decrease maximum time between rotations
+        if (maxTimeBetweenRotations > minTimeBetweenRotations)
+        {
+            maxTimeBetweenRotations-= 5;
+        }
+
 		script.beginRotation();
         isWaiting = false;
 	}
