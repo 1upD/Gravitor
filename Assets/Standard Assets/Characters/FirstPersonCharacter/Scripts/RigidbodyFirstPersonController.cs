@@ -32,6 +32,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #if !MOBILE_INPUT
             private bool m_Running;
             private bool m_Crouching;
+
 #endif
 
 
@@ -118,8 +119,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
 		private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 		private bool dead = false;
-
-
+		private AudioSource audioSource;
         public Vector3 Velocity
         {
             get { return m_RigidBody.velocity; }
@@ -153,6 +153,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+			audioSource = GetComponent<AudioSource> ();
             //currentGravity = Physics.gravity;
         }
 
@@ -215,6 +216,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			if (!dead) {
 				GroundCheck ();
 				Vector2 input = GetInput ();
+
+				// Play a walking sound if input does not equal zero in both directions
+				if (!audioSource.isPlaying && (input.x  != 0 || input.y != 0)) {
+					audioSource.Play ();
+
+				}
+
 
 				if ((Mathf.Abs (input.x) > float.Epsilon || Mathf.Abs (input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
 					// always move along the camera forward as it is the direction that it being aimed at

@@ -26,7 +26,10 @@ public class Counter : MonoBehaviour {
         {
 			seconds = set_seconds - (int)(Time.time);
             counterText.text = counterString + ": " + seconds.ToString("000");
-            if (seconds < 90) changeTimeColor();
+			if (seconds < 90) {
+				changeTimeColor ();
+				playAlarm ();
+			}
         }
         else
         {
@@ -52,5 +55,12 @@ public class Counter : MonoBehaviour {
 			counterText.color = Color.white;
 		}
     }
+
+	public void playAlarm(){
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (!audioSource.isPlaying) {			
+			audioSource.Play ();
+		} 
+	}
 
 }

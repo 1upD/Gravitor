@@ -32,6 +32,11 @@ public class LevelRotate : MonoBehaviour {
 	void Update () {
         // If this level should currently rotate:
         if(isRotating){
+			// Rotating sound
+			AudioSource audioSource = GetComponent<AudioSource> ();
+
+			if(!audioSource.isPlaying) audioSource.Play();
+
             // Get the current angle of rotation
             currentAngle = transform.eulerAngles.z;
             // Check edge case: Make sure that the angle hasn't crossed 359 degrees and reverted to 0

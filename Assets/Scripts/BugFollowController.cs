@@ -14,5 +14,12 @@ public class BugFollowController : MonoBehaviour {
 	void Update () {
         transform.LookAt(target.transform.position);
         GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Force);
+
+		// Calculate distance to player
+		float distToTarget = Vector3.Distance(transform.position, target.transform.position);
+		if (distToTarget < 5) {
+			AudioSource audioSource = GetComponent<AudioSource> ();
+			audioSource.Play ();
+		}
 	}
 }
