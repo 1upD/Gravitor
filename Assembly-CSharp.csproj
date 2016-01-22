@@ -66,6 +66,10 @@
      <Compile Include="Assets\Scripts\SelectableObject.cs" />
      <Compile Include="Assets\Scripts\ShootScriptAssaultRifle.cs" />
      <Compile Include="Assets\Scripts\UIManagerScript.cs" />
+     <Compile Include="Assets\dreamlo\LeaderBoardSample.cs" />
+     <Compile Include="Assets\dreamlo\dreamloLeaderBoard.cs" />
+     <Compile Include="Assets\dreamlo\dreamloPromoCode.cs" />
+     <None Include="Assets\dreamlo\README_FIRST.txt" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

@@ -47,7 +47,7 @@ public class Counter : MonoBehaviour {
 
     private void gameOver()
     {
-        healthScript.SetGameOver(true);
+        healthScript.endGame();
     }
 
     public void changeTimeColor() {
