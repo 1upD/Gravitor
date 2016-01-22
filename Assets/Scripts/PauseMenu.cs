@@ -8,11 +8,15 @@ public class PauseMenu : MonoBehaviour {
     GameObject pauseMenu;
     bool paused;
     bool muted;
+	RawImage rawImage;
+
 
 	// Use this for initialization
 	void Start () {
 		paused = false;
 		pauseMenu = GameObject.Find ("pauseMenu");
+		rawImage= GetComponent<RawImage> (); 
+		rawImage.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -24,9 +28,11 @@ public class PauseMenu : MonoBehaviour {
 		if (paused) {
 			Debug.Log ("pause");
 			pauseMenu.SetActive (true);
+			rawImage.enabled = true;
 			Time.timeScale = 0;
 		} else if (!paused) {
 			pauseMenu.SetActive (false);
+			rawImage.enabled = false;
 			Time.timeScale = 1;
 		}
 
