@@ -12,9 +12,11 @@ public class Health : MonoBehaviour {
 	public Text scoreText;
 	private ScoreCounter scoreCounter;
 
+
 	void Start(){
 		gameOverText.enabled = false; //disable GameOver text on start
 		scoreCounter = scoreText.GetComponent<ScoreCounter>();
+
 	}
 
 	// Update is called once per frame
@@ -29,15 +31,19 @@ public class Health : MonoBehaviour {
         }
 	}
 
-    private void endGame()
+    public void endGame()
     {
-        isGameOver = true;    //set game over to true
-        gameOverText.enabled = true; //enable GameOver text
-        Debug.Log("Taking away weapons");
-        ShootScriptAssaultRifle.TakeAwayAll();
-        Debug.Log("Freezing player");
-        GetComponent<RigidbodyFirstPersonController>().Freeze();
-        Debug.Log("Player frozen.");
+        if (!isGameOver)
+        {
+            isGameOver = true;    //set game over to true
+            gameOverText.enabled = true; //enable GameOver text
+            Debug.Log("Taking away weapons");
+            ShootScriptAssaultRifle.TakeAwayAll();
+            Debug.Log("Freezing player");
+            GetComponent<RigidbodyFirstPersonController>().Freeze();
+            Debug.Log("Player frozen.");
+            scoreCounter.StopScoring();
+        }
     }
 
 	//Check if player enters/stays on the fire
@@ -47,20 +53,7 @@ public class Health : MonoBehaviour {
 			healthBarSlider.value -=.001f;  //reduce health
 		}
 		else{
-			isGameOver = true;    //set game over to true
-			gameOverText.enabled = true; //enable GameOver text
-			Debug.Log("Taking away weapons");
-			ShootScriptAssaultRifle.TakeAwayAll();
-			Debug.Log ("Freezing player");
-			GetComponent<RigidbodyFirstPersonController>().Freeze();
-			Debug.Log ("Player frozen.");
+            endGame();
 		}
 	}
-
-    public void SetGameOver(bool isOver)
-    {
-        this.isGameOver = isOver;
-        healthBarSlider.value = 0;
-		scoreCounter.StopScoring ();
-    }
 }
